@@ -1,2 +1,2 @@
 # mattpaulhus.github.io
-Currently producing personal website in test
+Currently producing personal portfolio website using HTML5 template.  
