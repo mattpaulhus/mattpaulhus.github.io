@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Analyze - Matt Paulhus</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+	</head>
+	<body class="single is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="../index.html">Home</a></h1>
+						<nav class="links">
+							<ul>
+								<li><a href="../About Me.html">About Me</a></li>
+								<li><a href="../Analyzing Landing Page.html">Analyzing</a></li>
+								<li><a href="../Leading Landing Page.html">Leading</a></li>
+								<li><a href="../Improving Landing Page.html">Improving</a></li>
+								
+							</ul>
+						</nav>
+						<nav class="main">
+							<ul>
+								
+								<li class="menu">
+									<a class="fa-bars" href="#menu">Menu</a>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<section id="menu">							
+
+						<!-- Links -->
+							<section>
+								<ul class="links">
+									<li>
+										<a href="../About Me.html">
+											<h3>About Me</h3>
+											<p>My summary and why I have the aptitudes I have.</p>
+										</a>
+									</li>
+									<li>
+										<a href="../Analyzing Landing Page.html">
+											<h3>Analyzing</h3>
+											<p>Analyzing data to understand and make informed decisions</p>
+										</a>
+									</li>
+									<li>
+										<a href="../Leading Landing Page.html">
+											<h3>Leading</h3>
+											<p>Choosing to Serve Others</p>
+										</a>
+									</li>									
+									<li>
+										<a href="../Improving Landing Page.html">
+											<h3>Improving</h3>										
+											<p>Other improvements helping the organization.</p>
+										</a>
+									</li>								
+									
+									<li>
+										<a href="../articles/Paulhus-Resume.html">
+											<h3>Resume</h3>
+											<p></p>
+										</a>
+									</li>
+								</ul>
+							</section>					
+
+					</section>
+
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2><a href="Logistic Regression 1.html">Multivariate Logistic Regression</a></h2>
+										<p>Predicting A Field in the PLM with 90% Accuracy</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2021-11-01">October 2021</time>
+										<a href="../About Me.html" class="author"><span class="name">Matt Paulhus</span><img src="../images/137269453_10159314176804668_180766124804969667_o.jpg" alt="" /></a>
+									</div>
+								</header>
+								<span class="image featured"><img src="../images/Logistic Regression Project main.PNG" alt="" /></span>
+								<h4>Business Problem</h4>
+								<p>Improve the accuracy of the selected Functional Team field in the Agile Product Lifecycle Management (PLM) System.</p>
+								<h4>Method</h4> 
+								<p>First, I needed to extract the information from the Agile PLM System using basic SQL.  This resulted in a dataframe with nine dimensions and one class label.
+								Next, I used Python to pre-process the data to create dummy variables for categorical features and remove dimensions not required for the regression model.  
+								Then, after splitting the data into predictor (X) and predicted (Y) train and test set, I ran the classifier, saving the best of 50 iterations.    
+								 </p>				
+								 <div class="row" style="margin-bottom:0px ;padding-bottom:0px; !important">                    
+                                        <img class="image clickable" src="../images/Logistic Regression Project 4.1.PNG" alt=""  style="width:400px !important;height:auto;  !important;"/>
+        								<div class="column"><p>Step 1:  Develop the original SQL using Oracle SQL Developer</p></div>
+                                </div>
+                                <div class="row" style="padding-top:0px">
+                                        <img class="image clickable" src="../images/Logistic Regression Project 6.PNG" alt="" style="width:400px !important;height:auto; !important;"/>
+        								<div class="column"><p>Step 2:  Pre-process the data.  Here, I needed to replace the placeholder product line numeric values with list values and create the dummy variables for select columns.</p></div>
+                                </div>
+                                <div class="row" style="padding-top:0px">
+                                        <img  class="image clickable" src="../images/Logistic Regression Project 2.PNG" style="width:400px !important;height:auto; !important;"/>
+        								<div class="column"><p>Step 3:  Conduct iterations of training data and saving the best classification.</p></div>
+                                </div> 
+                                <div class="row" style="padding-top:0px">
+                                        <img src="../images/Logistic Regression Project results.PNG" class="image clickable" id="123" style="width:400px !important;height:auto; !important;"/>
+        								<div class="column">
+            								<p style="margin-bottom:10px">Step 4:  Assess the results. Use the Classification Report to assess class labels with low precision and recall scores and consider:</p>
+            								<div class="col-6 col-12-medium" style="padding-left:25px; padding-top:0px; margin-top:0px; !important">
+            									<li>Can we remove the class labels (list values in the PLM) with low usage to remove clutter and maintenance cost?</li>
+												<li>Can we document better how to use class labels with low F1 score so that they are used?</li>
+												<li>Were any false positives mislabeled by me originally as the user?</li>
+												<li>Can we improve the PLM system so that, as users, we can improve how accurate we choose the Functional Team field?</li>
+            								</div>
+        								</div>
+                                </div> 
+                                   <br>
+                                     <h4>Future Outcome</h4>
+                                     <p>Deploy one program that periodically updates the classification model saved within the PLM system.  Use the Agile PLM System's internal event scripting to automatically fill in the Functional Team field with a predicted value.  
+                                     As we, the Configuration Management Analysts, occasionally change the field as needed, the classification model will retrain with updated data.  Also important, I can use this framework for more advanced models, such as predicting correct reviewers for product and document changes.
+                                     </p>       	
+                             		<h4>What I learned</h4>
+                             		<p>Machine Learning Basics, Regression and Classification, Python, Confusion Matrix, scoring a Regression or Classification Model (using accuracy, precision, recall, and F1 score), statistics, and how to save a classification and use it to predict new values.</p>
+                                 		</p>
+	
+				
+                                <!-- The Modal -->
+                                <div id="myModal" class="modal">
+                                  <span class="close">&times;</span>   
+                                  <img class="modal-content" id="img01">                               
+                                </div>
+
+</article>
+
+					</div> <!--Main-->
+
+				<!-- Footer -->
+					<section id="footer">
+						<ul class="icons">							
+							<li><a href="mailto:mattpaulhus@msn.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                			<li><a href="http://www.linkedin.com/in/mattpaulhus" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+
+						</ul>
+						<p class="copyright">&copy; Matt Paulhus, using: <a href="http://html5up.net">HTML5 UP</a> Design.</p>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>			
+			<script src="../assets/js/main.js"></script>
+			<script src="../assets/js/Image Clickable.js"></script>
+
+	</body>
+</html>

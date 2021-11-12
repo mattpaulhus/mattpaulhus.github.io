@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Improving - Matt Paulhus</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+	</head>
+	<body class="single is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="../index.html">Home</a></h1>
+						<nav class="links">
+							<ul>
+								<li><a href="../About Me.html">About Me</a></li>
+								<li><a href="../Analyzing Landing Page.html">Analyzing</a></li>
+								<li><a href="../Leading Landing Page.html">Leading</a></li>
+								<li><a href="../Improving Landing Page.html">Improving</a></li>
+								
+							</ul>
+						</nav>
+						<nav class="main">
+							<ul>
+								
+								<li class="menu">
+									<a class="fa-bars" href="#menu">Menu</a>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<section id="menu">							
+
+						<!-- Links -->
+							<section>
+								<ul class="links">
+									<li>
+										<a href="../About Me.html">
+											<h3>About Me</h3>
+											<p>My summary and why I have the aptitudes I have.</p>
+										</a>
+									</li>
+									<li>
+										<a href="../Analyzing Landing Page.html">
+											<h3>Analyzing</h3>
+											<p>Analyzing data to understand and make informed decisions</p>
+										</a>
+									</li>
+									<li>
+										<a href="../Leading Landing Page.html">
+											<h3>Leading</h3>
+											<p>Choosing to Serve Others</p>
+										</a>
+									</li>									
+									<li>
+										<a href="../Improving Landing Page.html">
+											<h3>Improving</h3>										
+											<p>Other improvements helping the organization.</p>
+										</a>
+									</li>								
+									
+									<li>
+										<a href="../articles/Paulhus-Resume.html">
+											<h3>Resume</h3>
+											<p></p>
+										</a>
+									</li>
+								</ul>
+							</section>					
+
+					</section>
+
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2><a href="Automating Taxes.html">Automating Taxes</a></h2>
+										<p>Why Pay When you can do it for free?</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2021-04-01">April 2021</time>
+										<a href="../About Me.html" class="author"><span class="name">Matt Paulhus</span><img src="../images/137269453_10159314176804668_180766124804969667_o.jpg" alt="" /></a>
+									</div>
+								</header>
+								<span class="image featured"><img src="../images/Taxes Image 1.PNG" alt="" /></span>
+								<h4>Problem</h4>
+								<p>My wife made over 500 short-term stock trades in 2020, most of which must be itemized on Form 8949 (part of Schedule D). How can I used the IRS's Free Fillable Form online e-form to submit our taxes efficiently?   With numerous stock trades, can I programically fill out the Form 8949 and avoid paying HR Block or Turbo Tax?</p>
+        				
+                               <h4>Methodology</h4>
+                                <p>After consolidating all the broker statements into a single Excel file, I used a Java program to copy and paste data to the IRS e-form website.  </p>
+                               <div class="table-wrapper">
+										<table style="width: 100%">
+											<thead>
+												<tr><!--Column headers -->
+													<th>Requirement</th>
+													<th>How I Solved It</th>													
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Copy and Paste from a CSV File</td>
+													<td>I used a java.util.Scanner to iterate through a CSV file containing of all of the security trades. I used java.awt.Robot to automate the key strokes, namely the Ctrl+V, Ctrl+A, and the Tab keys.   </td>													
+												</tr>
+												
+												<tr>
+													<td>Maximum 14 Rows per each Form 8949</td>
+													<td>I deliniated sets of 14 rows using a Java Object[] and a javax.swing.JOptionPane to choose the correct line numbers to run.  This allowed redos if needed.</td>													
+												</tr>
+
+												<tr>
+													<td>Parse and Format Dates</td>
+													<td>I programmmed it to parse the date from the Excel file first, then format it for the e-Form.</td>													
+												</tr>
+												<tr>
+													<td>Account for Slight Differences in Brokers</td>
+													<td>Anytime the broker used the string "Various" in the date_aquired column, I used the the date_sold date instead.</td>													
+												</tr>
+												<tr>
+													<td>Slow it down</td>
+													<td>I needed to have the Java program copy and paste the data fast, but not too fast that the internet browser could not keep up.  I added java.lang.Thread.sleep() to slow the program down to a manageable speed.  </td>													
+												</tr>
+												<tr>
+													<td>Keep things organized</td>
+													<td>I consolidated information such as the stock ticker, security type, broker name, share size, and last four of the account number for column 1A.</td>													
+												</tr>
+											</tbody>											
+										</table>
+								</div>
+									<img class="image clickable" src="../images/Taxes Image 2.png" style="max-width:600px"/>
+									<img class="image clickable" src="../images/Taxes Image 3.png" style="max-width:600px"/>
+                                <h4>Outcome</h4>
+                                <p>It worked, and I was able to submit our taxes without external support.  Cannot wait to try it again for next year's taxes!</p>
+                            
+                                <h4>What I learned</h4>
+                                <p>How easy it is to file taxes online for free and how to use Java to automate manual tasks.</p>
+                            
+                                <!-- The Modal -->
+                                <div id="myModal" class="modal">
+                                  <span class="close">&times;</span>   
+                                  <img class="modal-content" id="img01">                               
+                                </div>
+
+</article>
+
+					</div> <!--Main-->
+
+				<!-- Footer -->
+					<section id="footer">
+						<ul class="icons">							
+							<li><a href="mailto:mattpaulhus@msn.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                			<li><a href="http://www.linkedin.com/in/mattpaulhus" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+
+						</ul>
+						<p class="copyright">&copy; Matt Paulhus, using: <a href="http://html5up.net">HTML5 UP</a> Design.</p>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>			
+			<script src="../assets/js/main.js"></script>
+			<script src="../assets/js/Image Clickable.js"></script>
+
+	</body>
+</html>

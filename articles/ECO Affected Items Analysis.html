@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Analyze - Matt Paulhus</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+	</head>
+	<body class="single is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="../index.html">Home</a></h1>
+						<nav class="links">
+							<ul>
+								<li><a href="../About Me.html">About Me</a></li>
+								<li><a href="../Analyzing Landing Page.html">Analyzing</a></li>
+								<li><a href="../Leading Landing Page.html">Leading</a></li>
+								<li><a href="../Improving Landing Page.html">Improving</a></li>
+								
+							</ul>
+						</nav>
+						<nav class="main">
+							<ul>
+								
+								<li class="menu">
+									<a class="fa-bars" href="#menu">Menu</a>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<section id="menu">							
+
+						<!-- Links -->
+							<section>
+								<ul class="links">
+									<li>
+										<a href="../About Me.html">
+											<h3>About Me</h3>
+											<p>My summary and why I have the aptitudes I have.</p>
+										</a>
+									</li>
+									<li>
+										<a href="../Analyzing Landing Page.html">
+											<h3>Analyzing</h3>
+											<p>Analyzing data to understand and make informed decisions</p>
+										</a>
+									</li>
+									<li>
+										<a href="../Leading Landing Page.html">
+											<h3>Leading</h3>
+											<p>Choosing to Serve Others</p>
+										</a>
+									</li>									
+									<li>
+										<a href="../Improving Landing Page.html">
+											<h3>Improving</h3>										
+											<p>Other improvements helping the organization.</p>
+										</a>
+									</li>								
+									
+									<li>
+										<a href="../articles/Paulhus-Resume.html">
+											<h3>Resume</h3>
+											<p></p>
+										</a>
+									</li>
+								</ul>
+							</section>					
+
+					</section>
+
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2><a href="ECO Affected Items Analysis.html">Analyzing Time Spent on Processing Engineering Change Orders</a></h2>
+										<p>Creating an Assessment of Engineering Change Order Workload</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2021-11-01">November 2021</time>
+										<a href="../About Me.html" class="author"><span class="name">Matt Paulhus</span><img src="../images/137269453_10159314176804668_180766124804969667_o.jpg" alt="" /></a>
+									</div>
+								</header>
+								<span class="image featured"><img src="../images/CN AI Analysis 4.png" alt="" /></span>
+								<h4>Business Question</h4>
+								<p>How can we better assess our Engineering Change Order (ECO) workload across team members based on types of ECOs instead of the simple monthly count?</p>
+    							<h4>Background</h4>
+    							<p>I had previously been analyzing how my workload with ECOs compared to my coworkers as one of our yearly performance goals is measured against that percentage.  However, some days I found myself getting credit for analyzing and processing single ECOs that took 1/10 of the time as other ECOs.  
+                    				</p>
+								<h4>Points-Based System</h4>			
+								<p>Using SQL and the Agile Product Lifecycle Management System database, I began to breakdown ECOs, assigning points based on various parts of the change.  The SQL used multiple Common Table Expressions (CTEs) to rollup information.  Here is the basic SQL structure. <i>(The full SQL is about 90 lines long!)</i></p>
+        						<pre><code>WITH cte as (
+    SELECT columns, ECO_number
+    from Table1
+    WHERE ...
+    )
+cte_2 as (
+    SELECT
+    SUM(col1 * .5) OVER (PARTITION BY ECO_number) as col1_points /*.5 is the arbitrary points assigned for this attribute of the ECO*/
+    ...
+    FROM CTE
+)
+SELECT config_analyst
+COUNT(ECO_number)
+RATIO_TO_REPORT(COUNT(ECO) OVER (PARTITION BY GROUPING_ID(config_analyst))) as ratio_ecos
+SUM(col1_points + col2_points + ...) as points
+RATIO_TO_REPORT(SUM(col1_points + col2_points + ...) OVER (PARTITION BY GROUPING_ID(config_analyst))) as ratio_points
+FROM CTE_2
+GROUP BY ROLLUP(config_analyst)
+ORDER BY CASE WHEN config_analyst <> 'Subtotal' THEN 1 ELSE 10 END;</code></pre>
+									<p>Which resulted in this:
+									<br><i>Note that 'CNs', Change Notices, are interchangeable to ECOs in this context.</i> </p>
+                                  <img class="image clickable" src="../images/CN AI Analysis I.PNG" style="max-width:600px"/> 				
+                                <h4>A wasted effort?</h4>
+                                <p>Notice how similar the two "Percent of Total" columns are during the same time period. This does not generate any meaningful insights compared to the original count analysis.  I realized that, as a whole, the three of us were still taking on an equal sample of ECOs.  
+                                <h4>Re-Assess</h4>
+                                <p>Nonetheless, this analysis can still help us gain insights.  I went back to the SQL and added more columns.  Instead of generic points, I tried to approximate how many seconds each task takes.  Then I let the database do the heavy lifting and aggregate the numbers.
+                                  Each column represents the number of minutes spent analyzing and processing the ECO.  Let the database aggregate and we get the workload analysis.  
+                                  <img class="image clickable" src="../images/CN AI Analysis 3.PNG" style="max-width:600px"/> 				
+                                <blockquote>The full SQL follows a similar structure as above, minus the second CTE.  It is about 160 lines long now with 13 JOINs plus 5 subquery JOINs in the first CTE! </blockquote>
+                                <p>The columns continue to evolve to reflect reality.  </p>  
+                                <h4>Some of the aggregates include bonus time for:</h4>
+                                  <ul style="padding-left:25px">
+										<li>New Items and Production Release Items.</li>
+										<li>Bill of Material Updates.</li>
+										<li>Time Spent Reviewing Word Doc Files and PDFs. <i>Time bonus is less for a PDF if a DOC file is already there.</i></li>
+										<li>Download Delay.</li>
+										<li>Extra Time for Resubmissions.</li>
+										<li>Time Spent Reviewing Comments.</li>
+										<li>Time Spent Responding to Comments. <i>Based on 6 characters/second typing speed and time spent reviewing and editing comments.</i></li>
+									</ul>	
+								<h4>Outcome</h4>
+								<p>More to follow.  I continue to refine and add columns to best reflect time spent processing our workload. We will use this data to balance time spend in side projects.  I will also analyze the data soon to discover any trends.  
+                                <h4>What I learned</h4>
+                                <p>Practicing SQL and understanding how gaining value out of data is possible, even when it is not at first glance.</p>                    
+                                  </div> 
+                                <!-- The Modal -->
+                                <div id="myModal" class="modal">
+                                  <span class="close">&times;</span>   
+                                  <img class="modal-content" id="img01">                               
+                                </div>
+
+                        </article>
+                </div> <!--Main-->
+
+				<!-- Footer -->
+					<section id="footer">
+						<ul class="icons">							
+							<li><a href="mailto:mattpaulhus@msn.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                			<li><a href="http://www.linkedin.com/in/mattpaulhus" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+
+						</ul>
+						<p class="copyright">&copy; Matt Paulhus, using: <a href="http://html5up.net">HTML5 UP</a> Design.</p>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>			
+			<script src="../assets/js/main.js"></script>
+			<script src="../assets/js/Image Clickable.js"></script>
+
+
+	</body>
+</html>

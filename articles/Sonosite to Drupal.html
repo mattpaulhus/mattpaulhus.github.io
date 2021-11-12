@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Improving - Matt Paulhus</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+	</head>
+	<body class="single is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="../index.html">Home</a></h1>
+						<nav class="links">
+							<ul>
+								<li><a href="../About Me.html">About Me</a></li>
+								<li><a href="../Analyzing Landing Page.html">Analyzing</a></li>
+								<li><a href="../Leading Landing Page.html">Leading</a></li>
+								<li><a href="../Improving Landing Page.html">Improving</a></li>
+								
+							</ul>
+						</nav>
+						<nav class="main">
+							<ul>
+								
+								<li class="menu">
+									<a class="fa-bars" href="#menu">Menu</a>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<section id="menu">							
+
+						<!-- Links -->
+							<section>
+								<ul class="links">
+									<li>
+										<a href="../About Me.html">
+											<h3>About Me</h3>
+											<p>My summary and why I have the aptitudes I have.</p>
+										</a>
+									</li>
+									<li>
+										<a href="../Analyzing Landing Page.html">
+											<h3>Analyzing</h3>
+											<p>Analyzing data to understand and make informed decisions</p>
+										</a>
+									</li>
+									<li>
+										<a href="../Leading Landing Page.html">
+											<h3>Leading</h3>
+											<p>Choosing to Serve Others</p>
+										</a>
+									</li>									
+									<li>
+										<a href="../Improving Landing Page.html">
+											<h3>Improving</h3>										
+											<p>Other improvements helping the organization.</p>
+										</a>
+									</li>								
+									
+									<li>
+										<a href="../articles/Paulhus-Resume.html">
+											<h3>Resume</h3>
+											<p></p>
+										</a>
+									</li>
+								</ul>
+							</section>					
+
+					</section>
+
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2><a href="Sonosite to Drupal.html">Synchronizing Files Released on Sonosite.com</a></h2>
+										<p>Automating a Manual Process to make sure publicly released documents are up to date</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2018-09-01">September 2018</time>
+										<a href="../About Me.html" class="author"><span class="name">Matt Paulhus</span><img src="../images/137269453_10159314176804668_180766124804969667_o.jpg" alt="" /></a>
+									</div>
+								</header>
+								<span class="image featured"><img src="../images/Sonosite User Guides 1.PNG" alt="" /></span>
+								<h4>Business Problem</h4>
+								<p>Product user guides had been manually uploaded to the <i><a href="https://www.sonosite.com/support/user-documents">www.sonosite.com</a></i> User Documentation site.  Over time, links became outdated and inconsistent.  These problems compound when additional languages are added to the mix. For the team responsible for keeping the website up to date, keeping documents (and the links 
+that point to them) correct and current continued to be problematic and led to an audit finding.  </p>
+    							<h4>Solution</h4>
+    							<p>I created a query and program that centralizes our user documentation published to sonosite.com. 
+                           <h4>Methodology</h4>
+                           <ol>
+												<li>I created a table on the Drupal Content Management System, a MYSQL server.</li>
+												<li>Then, I developed a SQL query for the Agile Product Lifecycle Management (PLM) System to extract information about recently released documentation for the website. The results set contains basic document information including a language field and attachment info.  If the language field is not filed out, the query uses key words in the filename and file description to choose the applicable language automatically. </li>
+												<li>Then, I developed a Java-based event script to run the Agile PLM SQL query and update the MYSQL table with document attributes. If the item is new (i.e., new primary key), Agile appends the new data and file binary data to the new server as a new row.  If the primary key already exists, Agile updates the row with the new information (such as new revision or dash number or new file data).  </li>
+												<pre><code>CREATE TABLE agile_docs (
+     part_base_id VARCHAR(10),
+     part_number VARCHAR(25) NOT NULL,
+     part_description VARCHAR(255) NOT NULL,
+     current_rev VARCHAR(3) NOT NULL,
+     filename VARCHAR(255) NOT NULL,
+     language VARCHAR(25),
+     agile_folder_num VARCHAR(255),
+     last_modified DATE,
+     file_size INT,
+     file_type VARCHAR(5),
+     file_blob_data LONGBLOB NOT NULL,
+     PRIMARY KEY (part_base_id)
+ );</pre></code>
+												<li>At the same time, the Java-based event script gets the appropriate file via java.io.InputStream (i.e., downloads it to memory) and updates the MYSQL table file_blob_data column using Binary Stream. <i>That is, the PDF file itself is stored as a cell in the table instead of uploaded to a file server.</i></li>
+<pre><code>InputStream content = null;
+try {
+    IItem item = session.getObject(IItem.OBJECT_TYPE, item_number.toString());
+    item.setRevision(current_rev);
+    ITable attachments = item.getTable(ItemConstants.TABLE_ATTACHMENTS);
+    Iterator iter = attachments.iterator();
+    while (iter.hasNext()) {
+        IRow row = (IRow) iter.next();
+        String filename_row = row.getValue(ItemConstants.ATT_ATTACHMENTS_FILENAME);
+        if (((IAttachmentFile)row).isSecure() && filename.equals(filename_row)) {
+            try {
+            content = ((IAttachmentFile)row).getFile();
+            } catch (Exception ex) {
+                throw new Exception ("Got error while trying to stream " +item.toString() + "(" +filename +") over via Input Stream. "+ex);	 } } 
+    } //done iterating over attachments table
+    } catch (Exception ee) {
+        throw new Exception("Error found when trying to pull $item_number's file " +item.toString() + "(" +filename +"). " +ee.getMessage());	}</pre></code>
+												
+												<li>If there are any errors, I set up the program to use javax.mail to send an HTML and CSS formatted email with error information to select individuals.</li>
+                                                <img src="../images/Sonosite User Guides 5.PNG" style="max-width:700px"/>
+        								</ol>
+   
+   
+   
+                           <h4>Outcome</h4>
+                           <p>The automated system guarantees that we will always offer the latest version of 
+all of our product documents for the public on our company website. From a regulatory standpoint, it is a huge win. As SonoSite continues to expand its global marketplace and product offerings, the 
+requirement to maintain translated document sets exponentially increases. Manually updating of documents is error-prone, cost-prohibitive, and not 
+sustainable. The automated document system elegantly solves these issues. </p>
+
+                            <h4>What I learned</h4>
+                            <p>The back-end of Sonosite.com, SQL differences with MYSQL (compared to Oracle), creating tables and other DML/DDL commands with MYSQL, streaming data, BLOB data type, and programmically sending custom emails using Java.
+   
+                                <!-- The Modal -->
+                                <div id="myModal" class="modal">
+                                  <span class="close">&times;</span>   
+                                  <img class="modal-content" id="img01">                               
+                                </div>
+
+</article>
+
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+var images = document.getElementsByClassName('image clickable');
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+
+
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+
+for (var i = 0; i < images.length; i++) {
+  var img = images[i];
+  // and attach our click listener for this image.
+  img.onclick = function(evt) {
+    modal.style.display = "block";
+    modalImg.src = this.src;
+    captionText.innerHTML = this.alt;
+  }
+}
+
+var span = document.getElementsByClassName("close")[0];
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+</script>
+	
+	<!-- for slideshow js script 											
+<script>
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  x[slideIndex-1].style.display = "block";  
+}
+</script>	
+-->		
+
+					</div> <!--Main-->
+
+				<!-- Footer -->
+					<section id="footer">
+						<ul class="icons">							
+							<li><a href="mailto:mattpaulhus@msn.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                			<li><a href="http://www.linkedin.com/in/mattpaulhus" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+
+						</ul>
+						<p class="copyright">&copy; Matt Paulhus, using: <a href="http://html5up.net">HTML5 UP</a> Design.</p>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>			
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>
