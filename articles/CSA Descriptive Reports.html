@@ -98,20 +98,20 @@
 								</header>
 								<span class="image featured"><img src="../images/Drawing File 1.1.PNG" alt="" /></span>
 								<h4>Business Problem</h4>
-								<p>External reports specify which company part numbers need to be flagged "Critical", yet some unknown number of part numbers are not marked properly.  This is a potential major audit finding. </p>
-								<h4>Methology</h4> 
+								<p>External reports specify which company part numbers need to be flagged "Critical," yet some unknown number of part numbers are not marked properly.  This is a potential major audit finding. </p>
+								<h4>Method</h4> 
 								<p>
-    								I used SQL to find the external reports listed in the database and use Java to find the specific Fujifilm Sonosite part numbers within the PDF files.  I used SQL again to cross-reference like part numbers with respective attributes needed for the Compliance Team to make a decision.
+    								I used SQL to find the external reports listed in the database and Java to find the specific Fujifilm Sonosite part numbers within the PDF files.  I used SQL again to cross-reference like part numbers with respective attributes needed for the Compliance Team to make a decision.
 								</p>
                     			 <h4>Business Outcome</h4>
-                                     <p>More to follow.  Depending on the Compliance Team's decision, I may help use my skills with technology and automation to mass update between <b>2,000 to 4,000</b> active part numbers using our change control workflow that are currently not marked as "Critical" but should be based on the external reports.
+                                     <p>More to follow.  Depending on the Compliance Team's decision, I may help use my skills with technology and automation to mass update between <b>2,000 to 4,000</b> active part numbers that are currently not marked as "Critical" but should be based on the external reports.
                                 </p>   
                                  <h4>Method</h4>   	
                          		
 							<ol>
 												<li>First, I developed a SQL query to find the specific PDF attachments, called "Descriptive Reports", attached as appendices to Compliance Reports, and generate their respective shortcut URLs.</li>
 												<img src="../images/CSA Descriptive File 7.PNG" />
-												<li>Then, I used Java.awt.Desktop to download all of the PDF files to a desktop folder by reading from the list of URLs.</li>
+												<li>Then, I used Java.awt.Desktop to download all the PDF files to a desktop folder by reading from the list of URLs.</li>
 												<li>Next, I used Apache PDFBox within the same Java program to scan through all of the downloaded PDF files, finding all of our Sonosite part numbers within the text. <i>Example: "P12746-XX"</i></li>
 <pre><code>/*For each .PDF file in the downloaded folder...*/
     PDDocument document = PDDocument.load(fileEntry);
@@ -119,7 +119,7 @@
     String text = stripper.getText(document);
 ...    												</code></pre>
 												<img src="../images/CSA Descriptive File 5.PNG" />
-												<li>For each result set, I used the same Java program to query the Agile PLM database for like part numbers, include dash-rolled numbers, returning part numbers, lifecycle, count of active and total where used, and respective current Critical Component field flag. </li>
+												<li>For each result set, I used the same Java program to query the Agile PLM database for like part numbers, including dash-rolled numbers, returning part numbers, lifecycle, count of active and total where-used, and respective current Critical Component field flag. </li>
 <pre><code>if (P_line_values.size() > 0) {
 	try {
         connection = connect_to_Agile_Test_database();
