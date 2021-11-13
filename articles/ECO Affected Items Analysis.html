@@ -100,10 +100,10 @@
 								<h4>Business Question</h4>
 								<p>How can we better assess our Engineering Change Order (ECO) workload across team members based on types of ECOs instead of the simple monthly count?</p>
     							<h4>Background</h4>
-    							<p>I had previously been analyzing how my workload with ECOs compared to my coworkers as one of our yearly performance goals is measured against that percentage.  However, some days I found myself getting credit for analyzing and processing single ECOs that took 1/10 of the time as other ECOs.  
+    							<p>I had analyzed how my workload with ECOs compared to my coworkers as one of our yearly performance goals is measured against that percentage. However, some days I found myself getting credit for analyzing and processing single ECOs that took 1/10 of the time as other ECOs.  
                     				</p>
 								<h4>Points-Based System</h4>			
-								<p>Using SQL and the Agile Product Lifecycle Management System database, I began to breakdown ECOs, assigning points based on various parts of the change.  The SQL used multiple Common Table Expressions (CTEs) to rollup information.  Here is the basic SQL structure. <i>(The full SQL is about 90 lines long!)</i></p>
+								<p>Using SQL and the Agile Product Lifecycle Management System database, I began to break down ECOs, assigning points based on various parts of the change.  The SQL used multiple Common Table Expressions (CTEs) to roll up information.  Here is the basic SQL structure. <i>(The full SQL is about 90 lines long!)</i></p>
         						<pre><code>WITH cte as (
     SELECT columns, ECO_number
     from Table1
@@ -124,13 +124,13 @@ FROM CTE_2
 GROUP BY ROLLUP(config_analyst)
 ORDER BY CASE WHEN config_analyst <> 'Subtotal' THEN 1 ELSE 10 END;</code></pre>
 									<p>Which resulted in this:
-									<br><i>Note that 'CNs', Change Notices, are interchangeable to ECOs in this context.</i> </p>
+									<br><i>Note that "CNs," Change Notices, are interchangeable to ECOs in this context.</i> </p>
                                   <img class="image clickable" src="../images/CN AI Analysis I.PNG" style="max-width:600px"/> 				
                                 <h4>A wasted effort?</h4>
-                                <p>Notice how similar the two "Percent of Total" columns are during the same time period. This does not generate any meaningful insights compared to the original count analysis.  I realized that, as a whole, the three of us were still taking on an equal sample of ECOs.  
+                                <p>Notice how similar the two "Percent of Total" columns are, which does not generate any meaningful insights compared to the count analysis. I realized that, as a whole, the three of us were still taking on an equal sample of ECOs.  
                                 <h4>Re-Assess</h4>
                                 <p>Nonetheless, this analysis can still help us gain insights.  I went back to the SQL and added more columns.  Instead of generic points, I tried to approximate how many seconds each task takes.  Then I let the database do the heavy lifting and aggregate the numbers.
-                                  Each column represents the number of minutes spent analyzing and processing the ECO.  Let the database aggregate and we get the workload analysis.  
+                                  Each column represents the number of minutes spent analyzing and processing the ECO.  Let the database aggregate to get the workload analysis.  
                                   <img class="image clickable" src="../images/CN AI Analysis 3.PNG" style="max-width:600px"/> 				
                                 <blockquote>The full SQL follows a similar structure as above, minus the second CTE.  It is about 160 lines long now with 13 JOINs plus 5 subquery JOINs in the first CTE! </blockquote>
                                 <p>The columns continue to evolve to reflect reality.  </p>  
@@ -138,14 +138,14 @@ ORDER BY CASE WHEN config_analyst <> 'Subtotal' THEN 1 ELSE 10 END;</code></pre>
                                   <ul style="padding-left:25px">
 										<li>New Items and Production Release Items.</li>
 										<li>Bill of Material Updates.</li>
-										<li>Time Spent Reviewing Word Doc Files and PDFs. <i>Time bonus is less for a PDF if a DOC file is already there.</i></li>
+										<li>Time Spent Reviewing Word Doc Files and PDFs. <i>The time bonus is less for a PDF if a DOC file is already there.</i></li>
 										<li>Download Delay.</li>
 										<li>Extra Time for Resubmissions.</li>
 										<li>Time Spent Reviewing Comments.</li>
-										<li>Time Spent Responding to Comments. <i>Based on 6 characters/second typing speed and time spent reviewing and editing comments.</i></li>
+										<li>Time Spent Responding to Comments. <i>Based on six characters per second typing speed and time spent reviewing and editing comments.</i></li>
 									</ul>	
 								<h4>Outcome</h4>
-								<p>More to follow.  I continue to refine and add columns to best reflect time spent processing our workload. We will use this data to balance time spend in side projects.  I will also analyze the data soon to discover any trends.  
+								<p>More to follow.  I continue to refine and add columns to reflect the time spent processing our workload. We will use this data to balance the time spent on other projects. I will also analyze the data soon to discover any trends.  
                                 <h4>What I learned</h4>
                                 <p>Practicing SQL and understanding how gaining value out of data is possible, even when it is not at first glance.</p>                    
                                   </div> 
