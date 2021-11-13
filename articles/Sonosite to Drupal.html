@@ -104,8 +104,8 @@ that point to them) correct and current continued to be problematic and led to a
     							<p>I created a query and program that centralizes our user documentation published to sonosite.com. 
                            <h4>Methodology</h4>
                            <ol>
-												<li>I created a table on the Drupal Content Management System, a MYSQL server.</li>
-												<li>Then, I developed a SQL query for the Agile Product Lifecycle Management (PLM) System to extract information about recently released documentation for the website. The results set contains basic document information including a language field and attachment info.  If the language field is not filed out, the query uses key words in the filename and file description to choose the applicable language automatically. </li>
+												<li>I created a table on the Drupal Content Management System, an MYSQL server.</li>
+												<li>Then, I developed a SQL query for the Agile Product Lifecycle Management (PLM) system to extract information about recently released documentation for the website. The results set contains basic document information including a language field and attachment info.  If the language field is not filled out, the query uses keywords in the filename and file description to choose the applicable language automatically. </li>
 												<li>Then, I developed a Java-based event script to run the Agile PLM SQL query and update the MYSQL table with document attributes. If the item is new (i.e., new primary key), Agile appends the new data and file binary data to the new server as a new row.  If the primary key already exists, Agile updates the row with the new information (such as new revision or dash number or new file data).  </li>
 												<pre><code>CREATE TABLE agile_docs (
      part_base_id VARCHAR(10),
@@ -147,13 +147,12 @@ try {
    
    
                            <h4>Outcome</h4>
-                           <p>The automated system guarantees that we will always offer the latest version of 
-all of our product documents for the public on our company website. From a regulatory standpoint, it is a huge win. As SonoSite continues to expand its global marketplace and product offerings, the 
-requirement to maintain translated document sets exponentially increases. Manually updating of documents is error-prone, cost-prohibitive, and not 
+                           <p>The automated system guarantees that we will always offer the latest version of our product documents for the public on our company website. From a regulatory standpoint, it is a huge win. As SonoSite continues to expand its global marketplace and product offerings, the 
+requirement to maintain translated document sets exponentially increases. Manually updating documents is error-prone, cost-prohibitive, and not 
 sustainable. The automated document system elegantly solves these issues. </p>
 
                             <h4>What I learned</h4>
-                            <p>The back-end of Sonosite.com, SQL differences with MYSQL (compared to Oracle), creating tables and other DML/DDL commands with MYSQL, streaming data, BLOB data type, and programmically sending custom emails using Java.
+                            <p>The back-end of Sonosite.com, SQL differences with MYSQL (compared to Oracle), creating tables and other DML/DDL commands with MYSQL, streaming data, BLOB data type, and programmatically sending custom emails using Java.
    
                                 <!-- The Modal -->
                                 <div id="myModal" class="modal">
