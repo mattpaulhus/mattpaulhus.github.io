@@ -98,17 +98,17 @@
 								</header>
 								<span class="image featured"><img src="../images/Subsequent Dash-roll Picture 1.PNG" alt="" /></span>
 								<h4>Business Problem</h4>
-								<p>What items can we inactivate, and likewise reduce sustaining maintenance costs, if prior dash-roll versions exist?</p>
+								<p>What items can we inactivate and reduce sustaining maintenance costs if prior dash-roll versions exist?</p>
     							<h4>Background</h4>
-    							<p>The Sustaining team came to me asking about better ways to clean up old dash-rolled part numbers.  Engineering creates -02, -03, etc. versions of part numbers in the same base number family, and while at the time we might need the previous -01 version active, eventually we do not and it stays actively maintained.
+    							<p>The Sustaining team came to me asking about better ways to clean up old dash-rolled part numbers.  Engineering creates -02, -03, or more versions of part numbers in the same base number family, and while at the time we might need the previous -01 version active, eventually we do not and it stays actively maintained.
                     				</p>
                     				<blockquote>For example, we create a P12345-02 off of a non-interchangeable change to the P12345-01. </blockquote>
-                    			<p>I had previously used SQL and the Agile Product Lifecycle Management System for finding prior dash-rolled items but this time it was going to more complicated.  I needed to account for lifecycle differences and figure out rules that apply to a unknown combination lifecycles of dash-rolled items.  
-                    			In SQL, we use LAST_VALUE() or LEAD() analytics functions with windowing clauses to find the last dash-rolled item, just as if a -25 exists, the -25 is the last dash-rolled item.  Like in the example below, to a human, we know that the -16 is the highest active dash-roll, in Production lifecycle.  The -25 is still Pre-Production.  The -07, -12, and -15 should be reviewed for inactivation as they have been replaced by the newer -16.</p>
+                    			<p>I had previously used SQL and the Agile Product Lifecycle Management System to find prior dash-rolled items but this time it was going to be more complicated.  I needed to account for lifecycle differences and figure out rules that apply to an unknown combination of lifecycles of dash-rolled items.  
+                    			In SQL, we use LAST_VALUE() or LEAD() analytics functions with windowing clauses to find the last dash-rolled item, just as if a -25 exists, the -25 is the last dash-rolled item.  In the example below, we know that the -16 in Production lifecycle is the highest active dash-roll.  The -25 is still Pre-Production.  The -07, -12, and -15 should be reviewed for inactivation as they have been replaced by the newer -16.</p>
                 			    <img class="image clickable" src="../images/Subsequent Dash-roll Picture 3.PNG" style="width:700px !important;height:auto; !important;"> 
                 			    <p>My earlier versions, including the first results set published for engineering, used a complex CASE statement in the SELECT clause.  Each of the many WHEN comparison expressions used analytics functions to flag the highest dash-roll while considering lifecycle and other exemptions.   
                     			<h4>Item Master</h4>
-                    			<p>Finally, as part of an overall Parts Item Master query for our Tableau Data Warehouse, I was able to pair down the CASE statement into a convienient double nested subquery in the FROM clause.
+                    			<p>Finally, as part of an overall Parts Item Master query for our Tableau Data Warehouse, I simplified the CASE statement into a convenient double nested subquery in the FROM clause.
 <pre><code>LEFT OUTER JOIN (
     SELECT
     base_id_number,
@@ -136,7 +136,7 @@
 ON B.base_id_number = A.base_number AND B.item_number = A.item_number ;</pre></code>            				
                     			<h4>Outcome</h4>
                     			<p>This is now permanently part of the Parts Item Master query we can use in Tableau Data Warehouse.  I have identified over 1800 part numbers that are active, are not used on any parent components, and have a similar higher dash-roll part number in its family. 
-                    			Periodically, we can add purchase order history, where use information, and pending sales orders from other sources in the Data Warehouse to regularly help us decide which parts should be considered for inactivation.
+                    			Periodically, we can add purchase order history, where-used information, and pending sales orders from other sources in the Data Warehouse to regularly help us decide which parts should be considered for inactivation.
                     			  We also updated the process so that old parts are cleaned up during the various phases of a product's lifecycle.</p>	
                     			<h4>What I learned</h4>
                     			<p>Advanced Oracle SQL including optimization techniques, the windowing clause of analytics functions, and more advanced subqueries in the FROM clause.    	
