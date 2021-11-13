@@ -98,7 +98,7 @@
 								</header>
 								<span class="image featured"><img src="../images/Taxes Image 1.PNG" alt="" /></span>
 								<h4>Problem</h4>
-								<p>My wife made over 500 short-term stock trades in 2020, most of which must be itemized on Form 8949 (part of Schedule D). How can I used the IRS's Free Fillable Form online e-form to submit our taxes efficiently?   With numerous stock trades, can I programically fill out the Form 8949 and avoid paying HR Block or Turbo Tax?</p>
+								<p>My wife made over 500 short-term stock trades in 2020, most of which must be itemized on Form 8949 (part of Schedule D). How can I use the IRS's Free Fillable Form online e-form to submit our taxes efficiently?   With numerous stock trades, can I programmatically fill out Form 8949 and avoid paying HR Block or Turbo Tax?</p>
         				
                                <h4>Method</h4>
                                 <p>After consolidating all the broker statements into a single Excel file, I used a Java program to copy and paste data to the IRS e-form website.  </p>
@@ -113,21 +113,21 @@
 											<tbody>
 												<tr>
 													<td>Copy and Paste from a CSV File</td>
-													<td>I used a java.util.Scanner to iterate through a CSV file containing of all of the security trades. I used java.awt.Robot to automate the key strokes, namely the Ctrl+V, Ctrl+A, and the Tab keys.   </td>													
+													<td>I used a java.util.Scanner to iterate through a CSV file containing all of the security trades. I used java.awt.Robot to automate the keystrokes, namely the Ctrl+V, Ctrl+A, and the Tab keys.   </td>													
 												</tr>
 												
 												<tr>
 													<td>Maximum 14 Rows per each Form 8949</td>
-													<td>I deliniated sets of 14 rows using a Java Object[] and a javax.swing.JOptionPane to choose the correct line numbers to run.  This allowed redos if needed.</td>													
+													<td>I delineated sets of 14 rows using a Java Object[] and a javax.swing.JOptionPane to choose the correct line numbers to run.  This allowed redos if needed.</td>													
 												</tr>
 
 												<tr>
 													<td>Parse and Format Dates</td>
-													<td>I programmmed it to parse the date from the Excel file first, then format it for the e-Form.</td>													
+													<td>I programmed it to parse the date from the Excel file first, then format it for the e-Form.</td>													
 												</tr>
 												<tr>
 													<td>Account for Slight Differences in Brokers</td>
-													<td>Anytime the broker used the string "Various" in the date_aquired column, I used the the date_sold date instead.</td>													
+													<td>Anytime the broker used the string "Various" in the date_aquired column, I used the date_sold date instead.</td>													
 												</tr>
 												<tr>
 													<td>Slow it down</td>
@@ -146,7 +146,7 @@
                                 <p>It worked, and I was able to submit our taxes without external support.  Cannot wait to try it again for next year's taxes!</p>
                             
                                 <h4>What I learned</h4>
-                                <p>How easy it is to file taxes online for free and how to use Java to automate manual tasks.</p>
+                                <p>How easy it is to file taxes online for free and use Java to automate manual tasks.</p>
                             
                                 <!-- The Modal -->
                                 <div id="myModal" class="modal">
