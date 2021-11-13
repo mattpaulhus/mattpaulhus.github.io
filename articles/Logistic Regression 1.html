@@ -110,28 +110,27 @@
                                 </div>
                                 <div class="row" style="padding-top:0px">
                                         <img class="image clickable" src="../images/Logistic Regression Project 6.png" alt="" style="width:400px !important;height:auto; !important;"/>
-        								<div class="column"><p>Step 2:  Pre-process the data.  Here, I needed to replace the placeholder product line numeric values with list values and create the dummy variables for select columns.</p></div>
+        								<div class="column"><p>Step 2:  Pre-process the data.  I needed to replace the placeholder product line numeric values with list values and create the dummy variables for select columns.</p></div>
                                 </div>
                                 <div class="row" style="padding-top:0px">
                                         <img  class="image clickable" src="../images/Logistic Regression Project 2.PNG" style="width:400px !important;height:auto; !important;"/>
-        								<div class="column"><p>Step 3:  Conduct iterations of training data and saving the best classification.</p></div>
+        								<div class="column"><p>Step 3:  Conduct iterations of training data and save the best classification.</p></div>
                                 </div> 
                                 <div class="row" style="padding-top:0px">
                                         <img src="../images/Logistic Regression Project results.PNG" class="image clickable" id="123" style="width:400px !important;height:auto; !important;"/>
         								<div class="column">
             								<p style="margin-bottom:10px">Step 4:  Assess the results. Use the Classification Report to assess class labels with low precision and recall scores and consider:</p>
             								<div class="col-6 col-12-medium" style="padding-left:25px; padding-top:0px; margin-top:0px; !important">
-            									<li>Can we remove the class labels (list values in the PLM) with low usage to remove clutter and maintenance cost?</li>
-												<li>Can we document better how to use class labels with low F1 score so that they are used?</li>
-												<li>Were any false positives mislabeled by me originally as the user?</li>
-												<li>Can we improve the PLM system so that, as users, we can improve how accurate we choose the Functional Team field?</li>
+            									<li>Can we remove the class labels (list values in the PLM) with low usage to remove clutter and maintenance costs?</li>
+												<li>Can we improve how to use class labels with low F1 scores?</li>
+												<li>Were any false positives originally mislabeled?</li>
+												<li>Can we improve the PLM system so that, as users, we can improve how accurately we choose the Functional Team field?</li>
             								</div>
         								</div>
                                 </div> 
                                    <br>
                                      <h4>Future Outcome</h4>
-                                     <p>Deploy one program that periodically updates the classification model saved within the PLM system.  Use the Agile PLM System's internal event scripting to automatically fill in the Functional Team field with a predicted value.  
-                                     As we, the Configuration Management Analysts, occasionally change the field as needed, the classification model will retrain with updated data.  Also important, I can use this framework for more advanced models, such as predicting correct reviewers for product and document changes.
+                                     <p>Deploy one program that periodically updates the classification model saved within the PLM system. Use the Agile PLM System's internal event scripting to automatically fill in the Functional Team field with a predicted value. The classification model will periodically retrain using changes that we, the Configuration Management Analysts, make. Also, I can use this framework for more advanced models, such as predicting correct reviewers for product and document changes.
                                      </p>       	
                              		<h4>What I learned</h4>
                              		<p>Machine Learning Basics, Regression and Classification, Python, Confusion Matrix, scoring a Regression or Classification Model (using accuracy, precision, recall, and F1 score), statistics, and how to save a classification and use it to predict new values.</p>
