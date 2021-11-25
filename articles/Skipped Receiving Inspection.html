@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Improving - Matt Paulhus</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="shortcut icon" type="image/ico" href="../images/favicon.ico">
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q1W9116GB"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-0Q1W9116GB');
+</script>
+	</head>
+	<body class="single is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="../index.html">Home</a></h1>
+						<nav class="links">
+							<ul>
+								<li><a href="../About Me.html">About Me</a></li>
+								<li><a href="../Analyzing Landing Page.html">Analyzing</a></li>
+								<li><a href="../Leading Landing Page.html">Leading</a></li>
+								<li><a href="../Improving Landing Page.html">Improving</a></li>
+								
+							</ul>
+						</nav>
+						<nav class="main">
+							<ul>
+								
+								<li class="menu">
+									<a class="fa-bars" href="#menu">Menu</a>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<section id="menu">							
+
+						<!-- Links -->
+							<section>
+								<ul class="links">
+									<li>
+										<a href="../About Me.html">
+											<h3>About Me</h3>
+											<p>My summary and why I have the aptitudes I have.</p>
+										</a>
+									</li>
+									<li>
+										<a href="../Analyzing Landing Page.html">
+											<h3>Analyzing</h3>
+											<p>Analyzing data to understand and make informed decisions</p>
+										</a>
+									</li>
+									<li>
+										<a href="../Leading Landing Page.html">
+											<h3>Leading</h3>
+											<p>Choosing to Serve Others</p>
+										</a>
+									</li>									
+									<li>
+										<a href="../Improving Landing Page.html">
+											<h3>Improving</h3>										
+											<p>Other improvements helping the organization.</p>
+										</a>
+									</li>								
+									
+									<li>
+										<a href="../articles/Paulhus-Resume.html">
+											<h3>Resume</h3>
+											<p></p>
+										</a>
+									</li>
+								</ul>
+							</section>					
+
+					</section>
+
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+											<h2><a href="articles/Skipped IQA.html">Skipping Receiving Inspection end-item Analysis</a></h2>
+										<p>Analyzing the Relationship between Component Receiving Inspection and End-Item Quality</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2021-07-01">July 2021</time>
+										<a href="../About Me.html" class="author"><span class="name">Matt Paulhus</span><img src="../images/137269453_10159314176804668_180766124804969667_o.jpg" alt="" /></a>
+									</div>
+								</header>
+								<span class="image featured"><img src="../images/Skipped Receiving Inspection 4.1.PNG" alt="" /></span>
+								<h4>Business Problem</h4>
+								<p>What is the relationship between components that skip receiving inspection and end-item quality? </p>
+								<h4>Method</h4> 
+								<p>
+    								This is an ongoing project that has gone through multiple iterations. 
+    								I used SQL to simultaneously query multiple databases, using a hierarchical subquery to find components that skipped receiving inspection and return the associated end-item defects.  
+    								After noticing significant drawbacks in query performance, I reorganized the query with a top-down hierarchical approach to support reproducibility.  
+    								
+    								
+								</p>
+                    			 <h4>Business Outcome</h4>
+                                     <p>So far, the results are inconclusive because most of our end items contain parts that skipped receiving inspection. Therefore, many sample datasets matched the population datasets, meaning we could not conduct hypothesis testing with the current analysis level.
+                                </p>                            
+                                 <h4>How</h4>   	
+                         		
+                							<ol>
+                    							<li>I began by exploring the Datasweep Manufacturing Execution System (MES), an Oracle database, to determine which components skipped receiving inspection. Parts may be allowed to skip receiving inspection based on our company's judgment of a supplier's performance, for instance.
+                                				  I continued to query the database for end-item defects and consumption information. 
+                                				 <i>However, there was a problem.</i>  I could see which parts skipped receiving inspection and the subassemblies consumed in our end items but not how the sub-components linked with the sub-assemblies within the Datasweep MES database.
+                                				
+                    							</li>
+                    							<li>
+                        							For this information, I would have to query for Bill of Material (BOM) data from our Agile Product Lifecycle Management (PLM) system database, an Oracle database.  
+                        							This time, I used a BOM explosion query I had previously developed with a database link to the Datasweep MES database.  I used multiple LEFT OUTER JOINs from one database to the other. 
+                        				<pre><code>WITH where_used_full_cte AS (
+    SELECT connect_by_root i.item_number AS root_item_number
+    , connect_by_root i.description AS root_item_description
+    , connect_by_root l2.entryvalue as root_part_subtype1
+    , i2.item_number AS where_used_item 
+    , i2.description AS parent_description
+    , l.entryvalue AS mst_oracle_template
+    FROM agile.bom b
+    JOIN agile.item_p2p3 i on b.component = i.id /*i is for child item */
+    JOIN agile.item_p2p3 i2 on b.item = i2.id /*i2 is for parent item */
+    JOIN agile.listentry l on entryid = i2.list06
+    FULL OUTER JOIN agile.rev r on r.item = i2.id and r.change = i2.default_change and r.latest_flag = 1   
+    JOIN agile.listentry l2 on l2.entryid = i.category
+    WHERE lower(l.entryvalue) like '%make%' 
+    and  r.release_type in (974, 975, 25517, 971) /* in ('Production', 'Pre-Prod', 'SERVICE', 'INA') */ 
+    START WITH i.item_number in (
+        SELECT DISTINCT iqa.primary_pn 
+        FROM actprod.DC_SONO_IQA_INCIDENTS@DB_LINK_AGILE_TO_DATASWEEP iqa
+        WHERE iqa.status = 'SKIP' 
+        and iqa.creation_time BETWEEN DATE '2020-09-30' and SYSDATE   
+        )
+    and change_out = '0' 
+    CONNECT BY prior i2.id = b.component
+    and nvl(b.change_out, 0) = 0 and (substr (b.flags, 5, 1) = 1) and level < 99        )
+SELECT DISTINCT root_item_number
+, w.root_item_description
+, w.root_part_subtype1
+, ri.recent_supplier
+, w.where_used_item
+, w.parent_description
+, w.mst_oracle_template
+, icapa.document_name AS ncr_number
+, icapa2.failure_code
+, CASE WHEN icapa2.failure_code = 'TEST FAILURE' THEN icapa2.title ELSE icapa2.failure_code END AS adjusted_failure_code
+, icapa2.failure_level
+, icapa2.solution
+, icapa2.title
+, icapa2.category AS ncr_category
+, icapa2.creation_time AS ncr_creation_time
+, count(DISTINCT icapa2.document_name) OVER (PARTITION BY w.where_used_item) AS ncr_count_per_wu
+, count(DISTINCT u.serial_number) OVER (PARTITION BY w.where_used_item) AS unit_count_per_wu
+, round(count(DISTINCT document_name) OVER (PARTITION BY w.where_used_item) / count(DISTINCT u.serial_number) OVER (PARTITION BY where_used_item), 4) AS ratio_ncrs_per_units_built
+, count(DISTINCT icapa2.document_name) OVER (PARTITION BY w.root_item_number) AS ncr_count_per_root_item
+, count(DISTINCT u.serial_number) OVER (PARTITION BY w.root_item_number) AS wu_unit_count_per_root_item
+, count(DISTINCT icapa2.document_name) OVER (PARTITION BY failure_code, where_used_item ) AS ncr_count_per_fc_wu
+, count(DISTINCT failure_code) OVER (PARTITION BY w.where_used_item) AS unique_fail_codes_per_wu
+, count(DISTINCT icapa2.document_name) OVER (PARTITION BY ri.recent_supplier) AS ncr_count_per_supplier
+, count(DISTINCT u.serial_number) OVER (PARTITION BY ri.recent_supplier) AS unit_count_per_supplier
+, count(DISTINCT w.root_item_number) OVER (PARTITION BY ri.recent_supplier) AS root_item_count_per_supplier
+FROM where_used_full_cte w
+LEFT OUTER JOIN actprod.unit@DB_LINK_AGILE_TO_DATASWEEP u on u.part_number = where_used_explosion.where_used_item
+LEFT OUTER JOIN actprod.DC_DS_ICAPA_AFFECTED_ITEM@DB_LINK_AGILE_TO_DATASWEEP icapa on u.SERIAL_NUMBER = icapa.OBJECT_IDENTIFIER and icapa.creation_time between date '2020-09-30' and SYSDATE
+LEFT OUTER JOIN actprod.DC_DS_ICAPA@DB_LINK_AGILE_TO_DATASWEEP icapa2 on icapa2.dc_instance_key = icapa.PARENT_KEY
+LEFT OUTER JOIN
+    ( SELECT primary_pn,  first_value(supplier_name) OVER (PARTITION BY primary_pn ORDER BY creation_time desc) AS recent_supplier
+      FROM actprod.DC_SONO_IQA_INCIDENTS@DB_LINK_AGILE_TO_DATASWEEP
+    WHERE creation_time > SYSDATE - 300
+    ) ri 
+    ON ri.primary_pn = root_item_number
+WHERE u.creation_time BETWEEN DATE '2020-09-30' and SYSDATE
+ORDER BY root_item_number, where_used_item;</code></pre>			
+                    							 I did not have access to the data warehouse and wanted to challenge myself by not performing complex lookups in Excel.
+
+                    							</li>
+                    							<li>
+                    							Yet again, there was another issue:  This query would never finish!  It consumed too much memory to return the final results set.  So I decided to try something different and program the query in Java to control execution.
+                    							The result set took two to three hours to complete.  Looking at the Oracle execution plan, I could tell the query itself was not significant (only a few million disk reads) but time-consuming due to the iterative use of the database link.
+                    							<img src="../images/Java SQL.PNG" />
+                    							</li>												
+												<li>
+												I then queried and added the total number of defects to Tableau as the “population” dataset with the sample items that had components that skipped receiving inspection as the “sample” dataset. Right away, we could generate some insights, namely how various part types, suppliers, and failure codes differed between the sample and population datasets.  
+												I used Tableau’s Level of Detail (LOD) to fix the calculations while moving between different levels of granularity.  
+    											<img src="../images/Skipped Receiving Inspection 2.PNG" />
+    											<img src="../images/Skipped Receiving Inspection 1.PNG" />
+												<img src="../images/Skipped Receiving Inspection 3.PNG" />
+
+												</li>
+												
+												<li>
+                                                The analysis did not yet appear complete, however.  With a sample size of over about 13,000 rows and a population size of 14,500, I knew I was not getting the most comprehensive dataset to work with.  The extensive time required to run the query did not seem ideal as well.  So, I decided to take a step back, reset, and try the query again.  This time, I decided to conduct a top-down approach.  
+                                                So instead of moving up the chain of “skipped-receiving inspection” components to parent level defects, I queried for parent level defects and moved down to any BOM components that skipped receiving inspection – now a new sample dataset to compare again against all defects.  
+                                                This restructured query now took about 15 seconds.
+                                                <pre><code>WITH bom_full_cte AS (
+    SELECT DISTINCT
+    CONNECT_BY_ROOT i2.item_number AS parent_item_number
+    , CONNECT_BY_ROOT i2.DESCRIPTION AS parent_item_description
+    , iqa.status
+    , iqa.supplier_name
+    , iqa.first_art_status 
+    , COUNT(DISTINCT iqa.creation_time) OVER (PARTITION BY b.item_number) AS count_iqa_incoming
+    , COUNT(DISTINCT iqa.creation_time) OVER (PARTITION BY b.item_number, iqa.status) AS count_iqa_by_status
+    FROM agile.bom b
+    JOIN agile.item_p2p3 I ON b.COMPONENT = I.ID  /*for child item */
+    JOIN agile.item_p2p3 i2 ON b.item = i2.ID  /*for parent item */  
+    LEFT JOIN actprod.dc_sono_iqa_incidents@db_link_agile_to_datasweep iqa 
+        ON iqa.primary_pn = b.item_number 
+        AND iqa.creation_time  BETWEEN DATE '2019-10-13' AND DATE '2020-10-13'  
+    WHERE I.CLASS = 10000
+    START WITH i2.item_number /*parent-item */ IN (
+        SELECT DISTINCT 
+        part_number
+        FROM actprod.unit@db_link_agile_to_datasweep u2 
+        WHERE  u2.creation_time BETWEEN DATE '2019-10-13' AND DATE '2020-10-13'
+        )
+    AND change_out = '0' 
+    CONNECT BY PRIOR b.COMPONENT = i2.ID  
+    AND nvl (b.change_out, 0) = 0 
+    AND (substr (b.flags, 5, 1) = 1)  
+    AND LEVEL =1
+)
+SELECT DISTINCT parent_item_number
+, u.serial_number
+, icapa2.document_name AS ncr_number
+, icapa2.failure_code
+, CASE WHEN icapa2.failure_code = 'TEST FAILURE' THEN icapa2.title ELSE icapa2.failure_code END AS adjusted_failure_code
+, icapa.discovery_route
+, icapa.discovery_operation
+, icapa2.failure_level
+, icapa2.solution
+, icapa2.title
+, icapa2.CATEGORY AS ncr_category
+, icapa2.creation_time AS ncr_creation_time
+, icapa.object_identifier
+, icapa.part_number AS ncr_affected_item
+, COUNT(DISTINCT u.serial_number) OVER (PARTITION BY b.parent_item_number) AS serial_number_count
+FROM bom_full_cte b
+JOIN actprod.unit@db_link_agile_to_datasweep u ON u.part_number = b.parent_item_number AND u.creation_time BETWEEN DATE '2019-10-13' AND DATE '2020-10-13'
+LEFT JOIN actprod.dc_ds_icapa_affected_item@db_link_agile_to_datasweep icapa ON u.serial_number = icapa.object_identifier AND icapa.creation_time BETWEEN DATE '2019-10-13' AND DATE '2020-10-13'
+LEFT JOIN actprod.dc_ds_icapa@db_link_agile_to_datasweep icapa2 ON icapa2.dc_instance_key = icapa.parent_key
+JOIN agile.item_p2p3 I ON u.part_number = I.item_number
+WHERE count_iqa_incoming > 0 
+AND status = 'SKIP'
+ORDER BY parent_item_number;</code></pre>
+												</li>
+											<li>
+											Now, it was back to Tableau. I added the two datasets and generated some new visualizations. Unfortunately, I was still unable to generate any significant findings with the current set. For example, the “Assembly Array” category represents 45,370 end-item units built compared to 47,400 in the population set. The analysis is inconclusive because almost every Assembly Array at the company contained parts that skipped receiving inspection. 
+											<img src="../images/Part Children breakdown with Parent Parts, Units, NCRs, and Ratios 2.PNG" />
+
+											
+											</li>
+																
+											</ol>
+										
+								<h4>Future Outcome</h4>
+								<p>In the next couple of months, I will analyze another query iteration of the single BOM level to visualize and test for significant variation between sample and population datasets.
+    								</p>		
+											
+                                  <h4>What I learned</h4>
+                                  <p>Blending aggregated and non-aggregated data in the same query; Tableau Level of Detail, calculated fields, table calculations, visualization techniques; database links; intermediate level SQL and SQL optimization techniques (SQL Theory).
+                                  				
+                                <!-- The Modal -->
+                                <div id="myModal" class="modal">
+                                  <span class="close">&times;</span>   
+                                  <img class="modal-content" id="img01">                               
+                                </div>
+
+</article>
+
+					</div> <!--Main-->
+
+				<!-- Footer -->
+					<section id="footer">
+						<ul class="icons">							
+							<li><a href="mailto:mattpaulhus@msn.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                			<li><a href="http://www.linkedin.com/in/mattpaulhus" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+
+						</ul>
+						<p class="copyright">&copy; Matt Paulhus, using: <a href="http://html5up.net">HTML5 UP</a> Design.</p>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>			
+			<script src="../assets/js/main.js"></script>
+			<script src="../assets/js/Image Clickable.js"></script>
+
+	</body>
+</html>
