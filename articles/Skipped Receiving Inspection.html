@@ -97,7 +97,7 @@
 							<article class="post">
 								<header>
 									<div class="title">
-											<h2><a href="articles/Skipped IQA.html">Skipping Receiving Inspection end-item Analysis</a></h2>
+											<h2><a href="articles/Skipped IQA.html">Skipping Receiving Inspection End-Item Analysis</a></h2>
 										<p>Analyzing the Relationship between Component Receiving Inspection and End-Item Quality</p>
 									</div>
 									<div class="meta">
@@ -197,15 +197,22 @@ ORDER BY root_item_number, where_used_item;</code></pre>
                     							<li>
                     							Yet again, there was another issue:  This query would never finish!  It consumed too much memory to return the final results set.  So I decided to try something different and program the query in Java to control execution.
                     							The result set took two to three hours to complete.  Looking at the Oracle execution plan, I could tell the query itself was not significant (only a few million disk reads) but time-consuming due to the iterative use of the database link.
-                    							<img src="../images/Java SQL.PNG" />
+                    							<img class="image clickable" src="../images/Java SQL.PNG" style="max-width:600px"/>
                     							</li>												
 												<li>
 												I then queried and added the total number of defects to Tableau as the “population” dataset with the sample items that had components that skipped receiving inspection as the “sample” dataset. Right away, we could generate some insights, namely how various part types, suppliers, and failure codes differed between the sample and population datasets.  
 												I used Tableau’s Level of Detail (LOD) to fix the calculations while moving between different levels of granularity.  
-    											<img src="../images/Skipped Receiving Inspection 2.PNG" />
-    											<img src="../images/Skipped Receiving Inspection 1.PNG" />
-												<img src="../images/Skipped Receiving Inspection 3.PNG" />
-
+    											 <div class="row">
+                                                  <div class="column">
+        											<img class="image clickable" src="../images/Skipped Receiving Inspection 2.PNG" style="max-width:600px"/>
+            									  </div>
+            									  <div class="column">
+        											<img class="image clickable" src="../images/Skipped Receiving Inspection 1.PNG" style="max-width:600px"/>
+    												</div>
+    												</div>
+    											 <div class="row">	
+												<img class="image clickable" src="../images/Skipped Receiving Inspection 3.PNG" style="max-width:600px"/>
+                                                    </div>
 												</li>
 												
 												<li>
